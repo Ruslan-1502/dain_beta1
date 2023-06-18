@@ -22,14 +22,14 @@ GROUP_ID = -1001683783876
 dp.middleware.setup(LoggingMiddleware())
 logging.basicConfig(level=logging.INFO)
 
-# async def on_startup(dispatcher):
-#     await dp.bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
+async def on_startup(dispatcher):
+    await dp.bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
     
-# async def on_startup_handler():
-#     await on_startup(dp)
+async def on_startup_handler():
+    await on_startup(dp)
     
-# async def on_shutdown(dispatcher):
-#     await dp.bot.delete_webhook()
+async def on_shutdown(dispatcher):
+    await dp.bot.delete_webhook()
 
 
 
@@ -55,17 +55,17 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users
                   (id INTEGER PRIMARY KEY, username TEXT, uid INTEGER, ar INTEGER, nick TEXT, region TEXT, chat_id INTEGER)
                """)
 
-# async def process_telegram_update(update):
-#     await dp.process_update(update)
+async def process_telegram_update(update):
+    await dp.process_update(update)
     
-# async def handle(request):
-#     if request.match_info.get('token') == BOT_TOKEN:
-#         data = await request.json()
-#         update = types.Update(**data)
-#         await dp.process_update(update)
-#         return web.Response(text="OK")
-#     else:
-#         return web.Response(text="Invalid token")
+async def handle(request):
+    if request.match_info.get('token') == BOT_TOKEN:
+        data = await request.json()
+        update = types.Update(**data)
+        await dp.process_update(update)
+        return web.Response(text="OK")
+    else:
+        return web.Response(text="Invalid token")
 
 
 async def start_command(message: types.Message):
@@ -279,11 +279,11 @@ loop.create_task(update_users_info())
 loop.create_task(backup_db())
 
 # Для Ноута
-if __name__ == '__main__':
-    from aiogram import executor
-    executor.start_polling(dp, skip_updates=True)
+# if __name__ == '__main__':
+#     from aiogram import executor
+#     executor.start_polling(dp, skip_updates=True)
 
 
 # Для сервера
-# if __name__ == '__main__':
-#     executor.start_webhook(dispatcher=dp, webhook_path=WEBHOOK_PATH, on_startup=on_startup, on_shutdown=on_shutdown, host=WEBAPP_HOST, port=WEBAPP_PORT)
+if __name__ == '__main__':
+    executor.start_webhook(dispatcher=dp, webhook_path=WEBHOOK_PATH, on_startup=on_startup, on_shutdown=on_shutdown, host=WEBAPP_HOST, port=WEBAPP_PORT)
