@@ -10,7 +10,6 @@ from aiogram.utils import executor, markdown
 import logging
 from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.types import ParseMode
-from enkacard import encbanner
 from config import BOT_TOKEN, WEBHOOK_URL, WEBAPP_HOST, WEBAPP_PORT,WEBHOOK_PATH
 from GetInfo import get_player
 
