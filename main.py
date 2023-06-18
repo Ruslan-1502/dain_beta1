@@ -49,8 +49,8 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users
                   (id INTEGER PRIMARY KEY, username TEXT, uid INTEGER, ar INTEGER, nick TEXT, region TEXT, chat_id INTEGER)
                """)
 
-async def process_telegram_update(update):
-    await dp.process_update(update)
+# async def process_telegram_update(update):
+#     await dp.process_update(update)
     
 async def handle(request):
     if request.match_info.get('token') == BOT_TOKEN:
