@@ -2,13 +2,10 @@ import os
 import re
 import asyncio
 from io import BytesIO
-from aiogram.types import InputMediaPhoto
 from aiohttp import web
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.webhook import SendMessage
 from aiogram.utils import executor, markdown
-import logging
-from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.types import ParseMode
 from config import BOT_TOKEN, WEBHOOK_URL, WEBAPP_HOST, WEBAPP_PORT,WEBHOOK_PATH
 from GetInfo import get_player
@@ -18,8 +15,6 @@ bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
 CHAT_ID = 254336259
 GROUP_ID = -1001683783876
-dp.middleware.setup(LoggingMiddleware())
-logging.basicConfig(level=logging.INFO)
 
 async def on_startup(dispatcher):
     await dp.bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
