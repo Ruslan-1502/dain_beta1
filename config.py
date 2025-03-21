@@ -1,7 +1,0 @@
-# import os
-
-# BOT_TOKEN = '5854308493:AAGVwnJ4KgN_1CByiwyw-Yz68GZN7426Hhg'
-# WEBHOOK_URL = f'https://dain2.herokuapp.com/webhook/5854308493:AAGVwnJ4KgN_1CByiwyw-Yz68GZN7426Hhg'
-# WEBAPP_HOST = '0.0.0.0'
-# WEBAPP_PORT = os.environ.get('PORT')
-# WEBHOOK_PATH = '/webhook/5854308493:AAGVwnJ4KgN_1CByiwyw-Yz68GZN7426Hhg'
