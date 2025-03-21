@@ -1,5 +1,0 @@
-websockets
-aiohttp
-aiogram
-enkanetwork.py
-enkacard
