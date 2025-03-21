@@ -21,7 +21,7 @@ except ImportError:
     pass  # На Koyeb dotenv не нужен
 
 # Инициализация бота
-API_TOKEN = os.getenv("BOT_TOKEN")  # Изменил на BOT_TOKEN для стандартизации
+API_TOKEN = os.getenv("BOT_TOKEN")
 if not API_TOKEN:
     logger.error("BOT_TOKEN не задан в переменных окружения")
     raise ValueError("BOT_TOKEN не задан")
@@ -59,13 +59,15 @@ async def on_user_leave(update: ChatMemberUpdated):
         )
 
 # Настройка вебхука при запуске
-async def on_startup(dispatcher: Dispatcher, bot: Bot):
+async def on_startup(app: web.Application):
+    bot = app["bot"]  # Получаем bot из приложения
     webhook_url = f"https://{os.getenv('KOYEB_PUBLIC_DOMAIN')}/webhook"
     await bot.set_webhook(webhook_url)
     logger.info(f"Вебхук установлен на {webhook_url}")
 
 # Удаление вебхука при завершении работы
-async def on_shutdown(dispatcher: Dispatcher, bot: Bot):
+async def on_shutdown(app: web.Application):
+    bot = app["bot"]  # Получаем bot из приложения
     await bot.delete_webhook()
     logger.info("Вебхук удален, бот остановлен")
 
@@ -83,7 +85,7 @@ if __name__ == "__main__":
     
     # Настраиваем обработчик вебхуков для aiogram
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path="/webhook")
-    setup_application(app, dp, bot=bot)
+    setup_application(app, dp, bot=bot)  # Это добавляет bot и dp в app
     
     # Добавляем функции on_startup и on_shutdown
     app.on_startup.append(on_startup)
