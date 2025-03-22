@@ -60,16 +60,20 @@ async def on_user_leave(update: ChatMemberUpdated):
 
 # Настройка вебхука при запуске
 async def on_startup(app: web.Application):
-    # Используем глобальную переменную bot
-    webhook_url = f"https://{os.getenv('KOYEB_PUBLIC_DOMAIN')}/webhook"
-    await bot.set_webhook(webhook_url)
-    logger.info(f"Вебхук установлен на {webhook_url}")
+    try:
+        webhook_url = f"https://{os.getenv('KOYEB_PUBLIC_DOMAIN')}/webhook"
+        await bot.set_webhook(webhook_url)
+        logger.info(f"Вебхук установлен на {webhook_url}")
+    except Exception as e:
+        logger.error(f"Ошибка при установке вебхука: {e}")
+        raise
 
-# Удаление вебхука при завершении работы
+# Удаление вебхука и закрытие сессии при завершении работы
 async def on_shutdown(app: web.Application):
-    # Используем глобальную переменную bot
     await bot.delete_webhook()
-    logger.info("Вебхук удален, бот остановлен")
+    # Закрываем сессию бота
+    await bot.session.close()
+    logger.info("Вебхук удален, сессия закрыта, бот остановлен")
 
 # Обработчик для проверки здоровья (health check)
 async def health_check(request):
@@ -85,7 +89,7 @@ if __name__ == "__main__":
     
     # Настраиваем обработчик вебхуков для aiogram
     SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path="/webhook")
-    setup_application(app, dp, bot=bot)  # Это добавляет bot и dp в app, но после on_startup
+    setup_application(app, dp, bot=bot)
     
     # Добавляем функции on_startup и on_shutdown
     app.on_startup.append(on_startup)
